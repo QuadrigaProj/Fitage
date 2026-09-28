@@ -71,7 +71,6 @@
   const stateOf = pct => pct >= 60 ? ['good', '좋아요'] : pct >= 30 ? ['okay', '보통이에요'] : ['low', '조금 더 힘내요'];
   const rank10 = pct => Math.max(1, Math.min(10, Math.ceil((100 - pct) / 10)));
   const reachText = v => v > 0 ? `손끝이 발끝을 ${v}cm 넘었어요` : v < 0 ? `손끝이 발끝까지 ${-v}cm 남았어요` : '손끝이 발끝에 딱 닿았어요';
-  const fmtDay = d => `${d.getMonth() + 1}월 ${d.getDate()}일`;
   const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   const dayShift = n => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() + n); return d; };
 
@@ -318,12 +317,10 @@
     },
     records(){
       const a = nowAge(), first = state.first?.결과?.체력나이 ?? null;
-      const next = state.programStart ? new Date(nextCheckDate() + 'T00:00:00') : null;      // 일반 모드의 '다음 점검일' 과 같은 날(시작일 + 12주)
-      const left = next ? daysToNextCheck() : null;
       return top(true) + `<div class="ez-body"><h2>내 기록</h2><p class="ez-label">지난 7일</p>${week()}
         <p class="sub">지난 7일에 <b>${weekCount()}번</b> 운동했어요.</p>
         ${a != null && first != null ? `<div class="ez-card"><span class="k">${ageTitle()}</span><span class="v">처음 ${Math.round(first)}세 → 지금 ${Math.round(a)}세</span></div>` : ''}
-        ${next ? `<div class="ez-card"><span class="k">다음에 다시 재는 날</span><span class="v">${fmtDay(next)}</span><span class="sub">${left > 0 ? `${left}일 남았어요. 같은 방법으로 다시 재요.` : '다시 잴 때가 됐어요.'}</span></div>` : ''}
+        <p class="sub">언제든 <b>체력 재기</b>를 누르면 다시 잴 수 있어요. 결과는 바로 바뀌어요.</p>
       </div><div class="ez-foot"><button type="button" class="ez-btn" data-act="go" data-to="home">처음으로</button></div>`;
     },
   };

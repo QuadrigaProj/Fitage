@@ -624,27 +624,23 @@ def test_나이로_바꾸지_않는_항목은_또래_순위로_보여_준다():
     assert "`${k} 또래 ${posLabel(순위)}${또래.어림 ? '쯤' : ''} · 기록했어요`" in 저장
 
 
-def test_다음_점검일을_캘린더에_넣는다():
-    """측정 → 처방 → 실행 → 재측정의 마지막 고리. 알림 서버를 두지 않고 캘린더 파일(.ics) 한 장을 내려 준다.
-    점검일은 기간 시작일(programStart)에서 12주(84일) 뒤이고, 이미 지났으면 캘린더 대신 바로 다시 재러 간다."""
+def test_12주_뒤_점검일과_캘린더_알림은_없다():
+    """재측정은 원할 때, 결과는 바로 (예현 2026-09-06 결정 · 09-29 알림까지 걷어냄).
+    12주 뒤 '다음 점검일' · 캘린더 파일(.ics) · 쉬운 모드의 '다음에 다시 재는 날' 을 두지 않는다."""
     html = _index()
-    역 = chr(92)
-    assert '<button type="button" class="axis-go" id="nextCheckBtn" onclick="onNextCheckTap()">캘린더에 추가</button>' in html
-    날 = html.split("function nextCheckDate()")[1].split("\n}")[0]
-    assert "state.programStart || todayIso()" in 날 and "d.getDate() + 84" in 날
-    ics = html.split("function recheckIcs()")[1].split("\n}")[0]
-    for 줄 in ("'BEGIN:VCALENDAR'", "'VERSION:2.0'", "`DTSTART;VALUE=DATE:${ymd(day)}`", "`DTEND;VALUE=DATE:${ymd(isoDate(d2))}`",
-              "'BEGIN:VALARM'", "'TRIGGER;RELATED=START:PT9H'", "'END:VEVENT'", "'END:VCALENDAR'"):
-        assert 줄 in ics, 줄
-    # 줄 끝은 CRLF, 한 줄은 75옥텟까지 — 한글은 글자당 3옥텟이라 접어야 한다 (RFC 5545)
-    assert f".map(icsFold).join('{역}r{역}n') + '{역}r{역}n'" in ics
-    접기 = html.split("function icsFold(line)")[1].split("\n}")[0]
-    assert "if (n + b > 75)" in 접기 and f"'{역}r{역}n '" in 접기 and "new TextEncoder()" in 접기
-    assert "saveBlob(new Blob([recheckIcs()], { type: 'text/calendar;charset=utf-8' }), 'fitage-recheck.ics');" in html
-    assert "function onNextCheckTap(){ daysToNextCheck() > 0 ? addRecheckToCalendar() : remeasure(); }" in html
+    쉬운 = (_ROOT / "frontend" / "js" / "easy-mode.js").read_text(encoding="utf-8")
+    for gone in ("function nextCheckDate()", "function daysToNextCheck()", "function recheckIcs()",
+                 "function addRecheckToCalendar()", "onNextCheckTap", "id=\"nextCheckDate\"",
+                 "다음 점검일", "12주 프로그램이 끝나는 날", "다시 잴 때가 됐어요", "fitage-recheck.ics"):
+        assert gone not in html, gone
+    for gone in ("nextCheckDate", "daysToNextCheck", "다음에 다시 재는 날", "다시 잴 때가 됐어요"):
+        assert gone not in 쉬운, gone
+    # 프로필에서도 기다리지 않고 바로 다시 잴 수 있다 — 홈의 '재측정하기' 와 같은 remeasure()
+    assert '<button type="button" class="axis-go" onclick="remeasure()">다시 재기</button>' in html
+    assert "언제든 <b>체력 재기</b>를 누르면 다시 잴 수 있어요. 결과는 바로 바뀌어요." in 쉬운
     그림 = html.split("function renderProfile()")[1].split("\n}")[0]
-    assert "$('nextCheckBtn').textContent = 남은날 > 0 ? '캘린더에 추가' : '다시 재러 가기';" in 그림
     assert "$('profileTools').hidden = false;" in 그림
+    assert "function saveBlob(blob, name)" in html          # 체력나이 카드 저장에 계속 쓴다
 
 
 def test_날짜는_기기의_날짜로_적는다():

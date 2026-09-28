@@ -1,4 +1,4 @@
-# Quadriga-DataProject
+# Fitage
 
 > **체력나이 진단 기반 일상 운동 루틴 및 생활활동 처방 서비스**
 > 다시 재기는 원할 때, 운동은 매일.
@@ -6,7 +6,7 @@
 **서비스: https://quadriga-fitness-age.onrender.com** — 설치 없이 PC · 모바일 브라우저에서, 가입 없이도 바로 써 볼 수 있습니다.
 (무료 서버라 한동안 아무도 안 들어왔으면 첫 화면까지 30초쯤 걸립니다.)
 
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/QuadrigaProj/Quadriga-DataProject/pulls)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/QuadrigaProj/Fitage/pulls)
 
 ---
 
@@ -55,7 +55,7 @@
 **사람이 아니라 역할로 나눕니다. 파일에 주인은 없습니다** — 필요하면 누구든 어느 파일이든 고쳐서 PR 올리세요.
 
 ```
-Quadriga-DataProject/
+Fitage/
 ├── frontend/                    # 화면 (브라우저에서 도는 것 전부)
 │   ├── index.html               #   모든 화면 한 파일 — 로그인 · 측정 · 결과 · 홈 · 루틴 · 프로필 · 추천 · 기록 · 커뮤니티 · 센터 찾기
 │   ├── privacy.html             #   개인정보처리방침
@@ -136,8 +136,8 @@ DATA_GO_KR_KEY=발급받은_인증키
 
 ```bash
 # 1. 클론
-git clone https://github.com/QuadrigaProj/Quadriga-DataProject.git
-cd Quadriga-DataProject
+git clone https://github.com/QuadrigaProj/Fitage.git
+cd Fitage
 
 # 2. 가상환경 생성 & 활성화
 python -m venv venv
@@ -657,8 +657,8 @@ git push -u origin feat/체력나이-산출
 
 ## 📅 진행 상황
 
-- 이슈: [Issues](https://github.com/QuadrigaProj/Quadriga-DataProject/issues)
-- 보드: [Projects](https://github.com/QuadrigaProj/Quadriga-DataProject/projects)
+- 이슈: [Issues](https://github.com/QuadrigaProj/Fitage/issues)
+- 보드: [Projects](https://github.com/QuadrigaProj/Fitage/projects)
 
 
 ---
